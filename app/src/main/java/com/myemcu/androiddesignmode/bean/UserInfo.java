@@ -5,5 +5,6 @@ package com.myemcu.androiddesignmode.bean;
  */
 
 public class UserInfo {
-    public static String username,password;
+    // EditText中录入的数据会存到这里来，方便其它调用
+    public String username,password;
 }

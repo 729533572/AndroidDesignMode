@@ -14,6 +14,7 @@ import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.myemcu.androiddesignmode.bean.UserInfo;
+import com.myemcu.androiddesignmode.net.UserLoginNet;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -51,7 +52,7 @@ public class MainActivity extends AppCompatActivity {
         final String passWord = et_user_password.getText().toString();
 
         // 传递输入
-        UserInfo userInfo = new UserInfo();
+        final UserInfo userInfo = new UserInfo();
         userInfo.username = userName;
         userInfo.password = passWord;
 
@@ -59,20 +60,26 @@ public class MainActivity extends AppCompatActivity {
         boolean isNull = checkUserInfo(userInfo);  // 校验错误输入
         if (!isNull) {  // 不为空
             dialog.show();  // 显示滚动条
+
+            // 联网模拟
             new Thread(){
                 @Override
                 public void run() {
-                    SystemClock.sleep(2000);// 睡2s
-                    if (userName.equals("yuyang") && passWord.equals("123456")) {// 验证成功
+
+                    UserLoginNet net = new UserLoginNet();  // 联网处理
+
+                    if (net.sendUserLoginInfo(userInfo)) {
                         runOnUiThread(new Runnable() {
                             @Override
                             public void run() {
-                                dialog.dismiss();   // 关进度条
+                                // 1 关进度条
+                                dialog.dismiss();
 
-                                // 保存登陆的用户名
+                                // 2 保存登陆的用户名
                                 SharedPreferences sp = getSharedPreferences("user_info",MODE_PRIVATE);
                                 sp.edit().putString("user_name",userName).apply();
 
+                                // 3 页面跳转
                                 Intent intent = new Intent(MainActivity.this,FortuneCenterActivity.class);
                                 startActivity(intent);
                                 finish();

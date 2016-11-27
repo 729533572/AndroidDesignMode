@@ -16,6 +16,6 @@ public class FortuneCenterActivity extends AppCompatActivity{
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_fortune_center);
 
-        Toast.makeText(this,"登陆成功，欢迎您："+ UserInfo.username,Toast.LENGTH_LONG).show();
+        Toast.makeText(this,"登陆成功，欢迎您", Toast.LENGTH_SHORT).show();
     }
 }
